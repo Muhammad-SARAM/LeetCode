@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool check(vector<int>& a,int k,int swe)
+    {
+        int sw=0,chu=0;
+        k++;
+        bool b=false;
+        for (int i:a)
+        {
+            sw+=i;
+            if (sw>=swe)
+            {
+                chu++;
+                sw=0;
+            }
+        }
+        return chu>=k;
+    }
+    int maximizeSweetness(vector<int>& a, int k) {
+        int st=1e5,en=0;
+        for (int i:a)
+        {
+            en+=i;
+            st=min(st,i);
+        }
+        en/=(k+1);
+        en+=2;
+        while (1)
+        {
+            int mid=(st+en)/2;
+            cout<<st<<' '<<en<<endl;
+            if (check(a,k,mid))
+                st=mid;
+            else
+                en=mid;
+            if (st+1>=en)
+                break;
+        }
+        return st;
+    }
+};
