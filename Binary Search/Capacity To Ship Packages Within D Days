@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool check(vector<int> weights,int days,int cap)
+    {
+        int d=0,wei=0;
+        for (int i:weights)
+        {
+            wei+=i;
+            if (i>cap)
+                return false;
+            if (wei>cap)
+            {
+                wei=i;
+                d++;
+            }
+        }
+        return (d+(wei+cap-1)/cap)<=days;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+        int en=0,st;
+        for (int i:weights)
+            en+=i;
+        st=en/((int)weights.size())-1;
+        while (1)
+        {
+            int mid=(st+en)/2;
+            cout<<st<<' '<<en<<endl;
+            if (check(weights,days,mid))
+                en=mid;
+            else
+                st=mid;
+            if (st+1>=en)
+                break;
+        }
+        return en;   
+    }
+};
