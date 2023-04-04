@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int missingElement(vector<int>& a, int k) {
+        int st=*a.begin();
+        int fir=st;
+        int en=st+k+a.size()*2;
+        while (1)
+        {
+            int mid=(st+en)/2;
+            int x=lower_bound(a.begin(),a.end(),mid)-a.begin();
+            // cout<<st<<' '<<en<<endl;
+            if (mid-fir-x+1==k)
+            {
+                st=mid;
+                break;
+            }
+            else if(mid-fir-x+1>k)
+                en=mid;
+            else
+                st=mid;
+            if (st+1>=en)
+                break;
+        }
+        for (int i:a)
+        {
+            if (i>st)
+                break;
+            if (i==st)
+                st++;
+        }
+        return st;
+    }
+};
