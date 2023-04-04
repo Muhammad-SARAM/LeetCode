@@ -1,0 +1,37 @@
+/**
+ * // This is the FontInfo's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class FontInfo {
+ *   public:
+ *     // Return the width of char ch when fontSize is used.
+ *     int getWidth(int fontSize, char ch);
+ *     
+ *     // Return Height of any char when fontSize is used.
+ *     int getHeight(int fontSize)
+ * };
+ */
+class Solution {
+public:
+    int maxFont(string text, int w, int h, vector<int>& fonts, FontInfo fontInfo) {
+        int st=0,en=fonts.size();
+        while (1)
+        {
+            int mid=(st+en)/2;
+            long long wid=0,hei=fontInfo.getHeight(fonts[mid]);
+            for (char i:text)
+                wid+=fontInfo.getWidth(fonts[mid],i);
+            if (hei<=h and wid<=w)
+                st=mid;
+            else
+                en=mid;
+            if (st+1>=en)
+                break;
+        }
+        long long wid=0;
+        for (char i:text)
+            wid+=fontInfo.getWidth(fonts[st],i);
+        if (fontInfo.getHeight(fonts[st])<=h and wid<=w)
+            return fonts[st];
+        return -1;
+    }
+};
