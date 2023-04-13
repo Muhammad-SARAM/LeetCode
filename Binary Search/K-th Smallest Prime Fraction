@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        int n=arr.size();
+        map<long double,pair<int,int>> val;
+        for (int i=0;i<n;i++)
+            for (int j=i+1;j<n;j++)
+            {
+                long double x=arr[i],y=arr[j];
+                val[x/y]={arr[i],arr[j]};
+            }
+        n=0;
+        for (auto i:val)
+        {
+            n++;
+            if (n==k)
+                return {i.second.first,i.second.second};
+        }
+        return {0,0};
+    }
+};
