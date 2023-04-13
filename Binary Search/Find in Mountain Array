@@ -1,0 +1,73 @@
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+    int binary(int st,int en,int target,MountainArray &mountainArr,bool rev=true)
+    {
+        cout<<st<<' '<<en<<endl;
+        while (1)
+        {
+            if (st+1>=en)
+                break;
+            int mid=(st+en)/2;
+            int x=mountainArr.get(mid);
+            if (x==target)
+                return mid;
+            if (rev)
+            {
+                if (x>target)
+                    en=mid;
+                else
+                    st=mid+1;
+            }
+            else
+            {
+                if (x>target)
+                    st=mid+1;
+                else
+                    en=mid;
+            }
+            cout<<st<<' '<<en<<endl;
+        }
+        if (st<en and mountainArr.get(st)==target)
+            return st;
+        else
+            return -1;
+    }
+    int findInMountainArray(int target, MountainArray &mountainArr) {
+        int n=mountainArr.length();
+        int st=1,en=n;
+        while (1)
+        {
+            int mid=(st+en)/2;
+            // cout<<st<<' '<<en<<endl;
+            int fir=mountainArr.get(mid-1);
+            int sec=mountainArr.get(mid);
+            if (mid==n-1)
+                break;
+            int thi=mountainArr.get(mid+1);
+            if (fir<sec and sec<thi)
+                st=mid+1;
+            else if(fir>sec and sec>thi)
+                en=mid;
+            else
+            {
+                st=mid;
+                break;
+            }
+        }
+        int ans1=binary(0,st+1,target,mountainArr);
+        int ans2=binary(st+1,n,target,mountainArr,0);
+        if (ans1!=-1 and ans2!=-1)
+            ans2=-1;
+        return max(ans1,ans2);
+    }
+};
