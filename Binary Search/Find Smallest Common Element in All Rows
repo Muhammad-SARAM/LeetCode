@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int smallestCommonElement(vector<vector<int>>& mat) {
+        int n=mat.size(),m=mat[0].size();
+        int ans=-1;
+        for (int j=0;j<m;j++)
+        {
+            int o=0;
+            for (int i=1;i<n;i++)
+            {
+                int st=0,en=m;
+                while (1)
+                {
+                    int mid=(st+en)/2;
+                    if (mat[i][mid]==mat[0][j])
+                    {
+                        st=mid;
+                        break;
+                    }
+                    else if(mat[i][mid]>mat[0][j])
+                        en=mid;
+                    else
+                        st=mid+1;
+                    if (st+1>=en)
+                        break;
+                }
+                o+=(mat[i][st]==mat[0][j]);
+            }
+            if (o==n-1)
+            {
+                ans=mat[0][j];
+                break;
+            }
+        }
+        return ans;
+    }
+};
