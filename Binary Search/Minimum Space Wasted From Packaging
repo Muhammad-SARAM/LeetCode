@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minWastedSpace(vector<int>& packages, vector<vector<int>>& boxes) {
+        long long n=packages.size();
+        long long pre[n+1],ans=1e13;
+        pre[0]=0;
+        sort(packages.begin(),packages.end());
+        for (long long i=0;i<n;i++)
+            pre[i+1]=pre[i]+packages[i];
+        long long o=0;
+        for (vector<int>l : boxes)
+        {
+            long long was=0;
+            long long st=0;
+            sort(l.begin(),l.end());
+            for (long long i:l)
+            {
+                long long x=upper_bound(packages.begin(),packages.end(),i)-packages.begin();
+                was+=i*(x-st)-pre[x]+pre[st];
+                st=x;
+            }
+            if (st<n)
+                o++;
+            else
+                ans=min(ans,was);
+        }
+        if (o==boxes.size())
+            ans=-1;
+        if (ans!=-1)
+            ans%=1000000007;
+        return ans;
+    }
+};
