@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long countPairs(vector<int>& nums1, vector<int>& nums2) {
+        long long ans=0;
+        vector<int> dif;
+        int n=nums1.size();
+        for (int i=0;i<n;i++)
+            dif.push_back(nums1[i]-nums2[i]);
+        sort(dif.begin(),dif.end());
+        for (int i=0;i<n;i++)
+        {
+            int x=lower_bound(dif.begin(),dif.end(),-1*dif[i]+1)-dif.begin();
+            ans+=n-x-(x!=n and dif[x]<=dif[i]);
+        }
+        return ans/2;
+    }
+};
