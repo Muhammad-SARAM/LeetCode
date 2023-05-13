@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int findKthNumber(int m, int n, int k) {
+        int st=1,en=n*m+1;
+        while (1)
+        {
+            int mid=st+(en-st)/2;
+            int le=0;
+            for (int i=1;i<=n;i++)
+                le+=min(mid/i-(mid%i==0),m);
+            if (le<k)
+                st=mid;
+            else
+                en=mid;
+            if (st+1>=en)
+                return st;
+        }
+    }
+};
