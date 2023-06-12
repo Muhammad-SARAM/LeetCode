@@ -1,0 +1,67 @@
+class Solution {
+public:
+    bool bfs(int lim,vector<vector<int>> grid)
+    {
+        int n=grid.size();
+        bool vis[n][n];
+        for (int i=0;i<n;i++)
+            for (int j=0;j<n;j++)
+                vis[i][j]=false;
+        queue<pair<int,int>> b;
+        b.push({0,0});
+        for (int i=0;i<n;i++)
+            for (int j=0;j<n;j++)
+                if (grid[i][j]>lim)
+                    vis[i][j]=true;
+        while (!b.empty())
+        {
+            auto x=b.front();
+            b.pop();
+            vis[x.first][x.second]=true;
+            if (x.first==n-1 and x.second==n-1)
+                break; 
+            if (x.first!=n-1 and !vis[x.first+1][x.second])
+            {
+                b.push({x.first+1,x.second});
+                vis[x.first+1][x.second]=true;
+            }
+            if (x.second!=n-1 and !vis[x.first][x.second+1])
+            {
+                b.push({x.first,x.second+1});
+                vis[x.first][x.second+1]=true;
+            }
+            if (x.first!=0 and !vis[x.first-1][x.second])
+            {
+                b.push({x.first-1,x.second});
+                vis[x.first-1][x.second]=true;
+            }
+            if (x.second!=0 and !vis[x.first][x.second-1])
+            { 
+                b.push({x.first,x.second-1});
+                vis[x.first][x.second-1]=true;
+            }
+        }
+        return vis[n-1][n-1];
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int st=max(grid[0][0],(grid.back()).back()),en=0;
+        for (auto j:grid)
+            for (int i:j)
+                en=max(en,i);
+        en++;
+        while (st+1<en)
+        {
+            int mid=(st+en)/2;
+            if (bfs(mid,grid))
+                en=mid+1;
+            else
+                st=mid+1;
+            if (st+2==en)
+            {
+                st+=!(bfs(st,grid));
+                break;
+            }
+        }
+        return st;
+    }
+};
