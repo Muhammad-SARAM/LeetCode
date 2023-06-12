@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int sma(int x,vector<vector<int>> matrix,int n,bool &fo)
+    {
+        int ans=0;
+        for (int i=0;i<n;i++)
+        {
+            int y=(lower_bound(matrix[i].begin(),matrix[i].end(),x)-matrix[i].begin());
+            if (!fo and y!=n)
+                fo=(matrix[i][y]==x);
+            ans+=y;
+        }
+        return ans;
+    }
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int st=1e9,en;
+        en=-st;
+        int n=matrix.size();
+        for (int i=0;i<n;i++)
+            for (int j=0;j<n;j++)
+            {
+                st=min(st,matrix[i][j]);
+                en=max(en,matrix[i][j]+1);
+            }
+        while (1)
+        {
+            int mid=(st+en)/2;
+            bool fo=false;
+            int sm=sma(mid,matrix,n,fo);
+            // cout<<st<<' '<<mid<<' '<<en<<endl;
+            // cout<<sm<<endl;
+            if (sm==k-1 and fo)
+                return mid;
+            else if(sm<k)
+                st=mid;
+            else
+                en=mid;
+            if (st+1>=en)
+                break;
+        }
+        return st;
+    }
+};
