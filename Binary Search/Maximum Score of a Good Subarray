@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int maximumScore(vector<int>& nums, int k) {
+        vector<int> bef,aft;
+        int mi=nums[k],n=nums.size();
+        cout<<n<<endl;
+        for (int i=k;i>=0;i--)
+        {
+            mi=min(mi,nums[i]);
+            bef.push_back(mi);
+        }
+        mi=nums[min(k+1,n-1)];
+        reverse(bef.begin(),bef.end());
+        int ans=0;
+        for (int i=k;i<n;i++)
+        {
+            mi=min(mi,nums[i]);
+            ans=max(ans,min(mi,nums[k])*(i-k+1));
+            aft.push_back(mi);
+        }
+        for (int i=bef.size()-1;i>=0;i--)
+            ans=max(ans,(int)(bef.size()-i)*bef[i]);
+        int a=bef.size();
+        for (int i=0;i<aft.size();i++)
+        {
+            int x=lower_bound(bef.begin(),bef.end(),aft[i])-bef.begin();
+            ans=max(ans,(i+a-x)*aft[i]);
+        }
+        int b=aft.size();
+        reverse(aft.begin(),aft.end());
+        for (int i=a-1;i>=0;i--)
+        {
+            int x=lower_bound(aft.begin(),aft.end(),bef[i])-aft.begin();
+            ans=max(ans,bef[i]*(a-i+b-x-1));
+        }
+        cout<<ans<<endl;
+        return ans;
+    }
+};
