@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minOperations(vector<int>& target, vector<int>& arr) {
+        vector<int> l;
+        map<int,int> ind;
+        int n=arr.size(),m=target.size();
+        for (int i=0;i<m;i++)
+            ind[target[i]]=i+1;
+        for (int i:arr)
+            if (ind.find(i)!=ind.end())
+                l.push_back(ind[i]);
+        n=l.size();
+        int dp[n+1];
+        dp[0]=0;
+        for (int i=1;i<=n;i++)
+            dp[i]=1e9+369;
+        int ans=0;
+        for (int i=0;i<n;i++)
+        {
+            int x=lower_bound(dp,dp+n+1,l[i])-dp;
+            dp[x]=l[i];
+            ans=max(x,ans);
+        }
+        return target.size()-ans;
+    }
+};
