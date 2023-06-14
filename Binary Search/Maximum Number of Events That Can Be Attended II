@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(events.begin(),events.end());
+        int n=events.size();
+        vector<int> time;
+        for (int i=0;i<n;i++)
+            time.push_back(events[i][0]);
+        int dp[n+1][k+1];
+        for (int i=0;i<=n;i++)
+            for (int j=0;j<=k;j++)
+                dp[i][j]=0;
+        for (int i=n-1;i>-1;i--)
+            for (int j=1;j<=min(n-i,k);j++)
+                dp[i][j]=max(dp[i+1][j],events[i][2]+dp[upper_bound(time.begin(),time.end(),events[i][1])-time.begin()][j-1]);
+        int ans=0;
+        for (int i=1;i<=k;i++)
+            ans=max(ans,dp[0][i]);
+        return ans;
+    }
+};
