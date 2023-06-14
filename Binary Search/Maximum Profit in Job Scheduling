@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=startTime.size();
+        vector<pair<int,pair<int,int>>> time;
+        for (int i=0;i<n;i++)
+            time.push_back({startTime[i],{endTime[i],profit[i]}});
+        sort(time.begin(),time.end());
+        for (int i=0;i<n;i++)
+        {
+            startTime[i]=time[i].first;
+            endTime[i]=time[i].second.first;
+            profit[i]=time[i].second.second;
+        }
+        int dp[n+1];
+        dp[n]=0;
+        for (int i=n-1;i>-1;i--)
+            dp[i]=max(dp[i+1],profit[i]+dp[(lower_bound(startTime.begin(),startTime.end(),endTime[i])-startTime.begin())]);
+        return dp[0];
+    }
+};
