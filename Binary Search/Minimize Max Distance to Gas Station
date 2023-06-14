@@ -1,0 +1,27 @@
+class Solution {
+public:
+    double minmaxGasDist(vector<int>& stations, int k) {
+        multiset<long double> dis;
+        int n=stations.size();
+        for (int i=0;i<n-1;i++)
+            dis.insert(stations[i+1]-stations[i]);
+        auto y=dis.end();
+        y--;
+        long double st=0,en=*y,epsilon=0.000001;
+        cout<<fixed<<setprecision(15);
+        while (1)
+        {
+            long double mid=(st+en)/2;
+            int to_add=0;
+            for (long double i:dis)
+                to_add+=(int)(ceil(i/mid))-1;
+            if (to_add<=k)
+                en=mid;
+            else
+                st=mid;
+            if (st+epsilon>=en)
+                break;
+        }
+        return en;
+    }
+};
